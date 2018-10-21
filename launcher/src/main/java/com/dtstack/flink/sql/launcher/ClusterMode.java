@@ -32,4 +32,6 @@ public class ClusterMode {
 
     public static final String MODE_YARN = "yarn";
 
+    public static final String MODE_YARN_JOB = "yarn_job";
+
 }
