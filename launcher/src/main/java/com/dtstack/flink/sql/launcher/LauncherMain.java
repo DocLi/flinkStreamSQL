@@ -30,7 +30,9 @@ import com.dtstack.flink.sql.ClusterMode;
 import org.apache.flink.table.shaded.org.apache.commons.lang.StringUtils;
 import org.apache.flink.runtime.jobgraph.SavepointRestoreSettings;
 import org.apache.flink.table.shaded.org.apache.commons.lang.BooleanUtils;
-
+import org.apache.flink.client.program.PackagedProgramUtils;
+import org.apache.flink.configuration.Configuration;
+import org.apache.flink.runtime.jobgraph.JobGraph;
 /**
  * Date: 2017/2/20
  * Company: www.dtstack.com
@@ -64,6 +66,9 @@ public class LauncherMain {
             if(StringUtils.isNotBlank(launcherOptions.getSavePointPath())){
                 program.setSavepointRestoreSettings(SavepointRestoreSettings.forPath(launcherOptions.getSavePointPath(), BooleanUtils.toBoolean(launcherOptions.getAllowNonRestoredState())));
             }
+            //final JobGraph jobGraph = PackagedProgramUtils.createJobGraph(program, new Configuration(), 1);
+            //clusterClient.runDetached(jobGraph,Thread.currentThread().getContextClassLoader());
+
             clusterClient.run(program, 1);
             clusterClient.shutdown();
 
