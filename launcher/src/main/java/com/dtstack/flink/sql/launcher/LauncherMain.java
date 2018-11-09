@@ -67,6 +67,7 @@ public class LauncherMain {
                 program.setSavepointRestoreSettings(SavepointRestoreSettings.forPath(launcherOptions.getSavePointPath(), BooleanUtils.toBoolean(launcherOptions.getAllowNonRestoredState())));
             }
             //final JobGraph jobGraph = PackagedProgramUtils.createJobGraph(program, new Configuration(), 1);
+            //jobGraph.setClasspaths(Main.urlList);
             //clusterClient.runDetached(jobGraph,Thread.currentThread().getContextClassLoader());
 
             clusterClient.run(program, 1);
