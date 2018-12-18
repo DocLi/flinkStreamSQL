@@ -67,6 +67,8 @@ public class SideSqlExec {
 
     private SideSQLParser sideSQLParser = new SideSQLParser();
 
+    private Map<String, Table> localTableCache = Maps.newHashMap();
+
     public void exec(String sql, Map<String, SideTableInfo> sideTableMap, StreamTableEnvironment tableEnv,
                      Map<String, Table> tableCache)
             throws Exception {
@@ -75,7 +77,7 @@ public class SideSqlExec {
             throw new RuntimeException("need to set localSqlPluginPath");
         }
 
-        Map<String, Table> localTableCache = Maps.newHashMap(tableCache);
+        localTableCache.putAll(tableCache);
         Queue<Object> exeQueue = sideSQLParser.getExeQueue(sql, sideTableMap.keySet());
         Object pollObj = null;
 
@@ -106,7 +108,7 @@ public class SideSqlExec {
 
             }else if (pollObj instanceof JoinInfo){
                 preIsSideJoin = true;
-                jionFun(pollObj, localTableCache, sideTableMap, tableEnv, replaceInfoList);
+                joinFun(pollObj, localTableCache, sideTableMap, tableEnv, replaceInfoList);
             }
         }
 
@@ -501,7 +503,7 @@ public class SideSqlExec {
             throw new RuntimeException("need to set localSqlPluginPath");
         }
 
-        Map<String, Table> localTableCache = Maps.newHashMap(tableCache);
+        localTableCache.putAll(tableCache);
         Queue<Object> exeQueue = sideSQLParser.getExeQueue(result.getExecSql(), sideTableMap.keySet());
         Object pollObj = null;
 
@@ -540,16 +542,17 @@ public class SideSqlExec {
                             throw new RuntimeException("Fields mismatch");
                         }
                     }
+                    localTableCache.put(result.getTableName(), table);
 
                 }
 
             }else if (pollObj instanceof JoinInfo){
                 preIsSideJoin = true;
-                jionFun(pollObj, localTableCache, sideTableMap, tableEnv, replaceInfoList);
+                joinFun(pollObj, localTableCache, sideTableMap, tableEnv, replaceInfoList);
             }
         }
     }
-    private void jionFun(Object pollObj, Map<String, Table> localTableCache,
+    private void joinFun(Object pollObj, Map<String, Table> localTableCache,
                          Map<String, SideTableInfo> sideTableMap, StreamTableEnvironment tableEnv,
                          List<FieldReplaceInfo> replaceInfoList) throws Exception{
         JoinInfo joinInfo = (JoinInfo) pollObj;
