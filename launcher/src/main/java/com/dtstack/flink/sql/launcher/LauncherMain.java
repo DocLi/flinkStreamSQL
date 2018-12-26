@@ -22,6 +22,8 @@ package com.dtstack.flink.sql.launcher;
 
 import avro.shaded.com.google.common.collect.Lists;
 import com.dtstack.flink.sql.Main;
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.flink.client.program.ClusterClient;
 import org.apache.flink.client.program.PackagedProgram;
 import java.io.File;
@@ -29,9 +31,7 @@ import java.util.List;
 import com.dtstack.flink.sql.ClusterMode;
 import org.apache.flink.client.program.PackagedProgramUtils;
 import org.apache.flink.runtime.jobgraph.JobGraph;
-import org.apache.flink.table.shaded.org.apache.commons.lang.StringUtils;
 import org.apache.flink.runtime.jobgraph.SavepointRestoreSettings;
-import org.apache.flink.table.shaded.org.apache.commons.lang.BooleanUtils;
 import org.apache.flink.configuration.Configuration;
 import org.json.JSONObject;
 
